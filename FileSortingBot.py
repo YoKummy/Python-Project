@@ -11,7 +11,7 @@ for ext in filelist:
     if not os.path.isdir(ext):
         os.mkdir(ext)
 
-    dfiles = [f for f in os.listdir() if f.lower().endswith("." + ext)]
+    dfiles = [f for f in os.listdir(download) if f.lower().endswith("." + ext)]
 
     for dfile in dfiles:
             src_path = os.path.join(download, dfile)
