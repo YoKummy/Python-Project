@@ -12,19 +12,12 @@ y = dataset["target"]
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
 
-<<<<<<< HEAD
 #normalize the input features
 scaler = StandardScaler()
 x_train_scaled = scaler.fit_transform(x_train)
 x_val_scaled = scaler.transform(x_val)
 x_test_scaled = scaler.transform(x_test)
-=======
-model = tf.keras.models.Sequential()
-model.add(tf.keras.layers.Dense(256, input_shape=x_train.shape[1:], activation = "sigmoid"))
-model.add(tf.keras.layers.Dense(256, activation = "sigmoid"))
-model.add(tf.keras.layers.Dense(1, activation = "sigmoid"))
-model.compile(optimizer = "adam", loss = "binary_crossentropy", metrics = ["accuracy"])
->>>>>>> 22174ebaca3b9bfcf9dd39e811cadfaf8cd1ea12
+
 
 #build the model
 model = tf.keras.models.Sequential([
