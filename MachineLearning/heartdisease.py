@@ -43,4 +43,4 @@ print("Test Accuracy:", test_accuracy)
 
 """ score = model.evaluate(x_test, y_test, verbose=0)
 print("Loss: ", score[0])
-print("Accuracy: ", score[1]) """
+print("Accuracy: ", score[1]) test"""
