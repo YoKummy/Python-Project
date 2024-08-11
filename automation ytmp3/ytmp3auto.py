@@ -1,33 +1,28 @@
-from pytube import Playlist, YouTube
 import os
-import moviepy.editor as mp
+import yt_dlp
 
 def download_playlist(playlist_url, download_folder):
     # Create download folder if it doesn't exist
     if not os.path.exists(download_folder):
         os.makedirs(download_folder)
 
-    # Download each video in the playlist
-    playlist = Playlist(playlist_url)
-    for url in playlist:
-        try:
-            # Download audio stream
-            audio_stream = YouTube(url).streams.filter(only_audio=True).first()
-            audio_stream.download(download_folder)
+    # yt-dlp options
+    ydl_opts = {
+        'format': 'bestaudio/best',  # Get the best audio quality
+        'outtmpl': os.path.join(download_folder, '%(title)s.%(ext)s'),  # Define output file format
+        'postprocessors': [{  # Post-process the audio to MP3 format
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',  # Set the audio quality to 192kbps
+        }],
+    }
 
-            # Convert to MP3
-            mp4_file = os.path.join(download_folder, audio_stream.default_filename)
-            mp3_file = os.path.join(download_folder, os.path.splitext(audio_stream.default_filename)[0] + '.mp3')
-            audio_clip = mp.AudioFileClip(mp4_file)
-            audio_clip.write_audiofile(mp3_file)
-
-            # Remove the original MP4 file
-            os.remove(mp4_file)
-        except Exception as e:
-            print(f"Error downloading {url}: {e}")
+    # Download the playlist
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([playlist_url])
 
 if __name__ == "__main__":
-    playlist_url = "https://youtube.com/playlist?list=PLlesp14MvetUywdwtgES_49FPqjxR8QDF&si=ZqXKH39Oe-9pNoyw"
-    download_folder = r"C:\Users\User\Desktop\song"
+    playlist_url = "https://youtube.com/playlist?list=PLlesp14MvetUywdwtgES_49FPqjxR8QDF&si=fwNIwzoA_u4RuyhK"
+    download_folder = "/Users/jonathanwheeler/Desktop/songs"
 
     download_playlist(playlist_url, download_folder)
