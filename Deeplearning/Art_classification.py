@@ -162,9 +162,10 @@ def get_image(path):
     ##########
     # todo #
     img = tf.image.resize(img, IMG_SIZE)
+    img /= 255
     ##########
     return img
-
+print(get_image("./train_resized/Mikhail_Vrubel_168.jpg")) #testing
 
 # 將所有資料轉成 Tensor -> Tensor 轉成圖片
 # 圖片 Tensor 與 label Tensor Zip 起來成一個 pair
@@ -205,7 +206,7 @@ print("train size : ", train_len, " val size : ", val_len)
 
 # 添加 batch
 # todo
-BATCH_SIZE = None
+BATCH_SIZE = 128 #128
 
 train_ds = train_ds.batch(BATCH_SIZE)
 val_ds = val_ds.batch(BATCH_SIZE)
@@ -216,23 +217,37 @@ x, y = trainiter.next()
 print("training image batch shape : ", x.shape)
 print("training label batch shape : ", y.shape)
 
-input_shape = None
+input_shape = (256, 256, 3)
 
 # 自訂你的 model
 ##########
 # todo #
 ##########
-model = None
+model = keras.Sequential([
+    keras.layers.InputLayer(shape=(256, 256, 3)),
+    keras.layers.Conv2D(32, (3, 3), activation='relu'),
+    keras.layers.MaxPooling2D(2, 2),
+    keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    keras.layers.MaxPooling2D(2, 2),
+    keras.layers.Conv2D(128, (3, 3), activation='relu'),
+    keras.layers.MaxPooling2D(2, 2),
+    keras.layers.Flatten(),
+    keras.layers.Dense(128, activation='relu'),
+    keras.layers.Dropout(0.5),
+    keras.layers.Dense(50, activation='softmax')
+])
+
 
 model.summary()
 
 # todo
-EPOCHS = None
+EPOCHS = 15
 
 ##########
 # todo #
 ##########
 # model.compile 決定 learning strategy、Loss calculator
+model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
 history = model.fit(train_ds, epochs=EPOCHS, validation_data=val_ds)
 
