@@ -14,6 +14,6 @@ model.add(tf.keras.layers.Dense(1, activation = "sigmoid"))
 
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics =["accuracy"])
 
-model.fit(x_train, y_train, epochs=1000)
+model.fit(x_train, y_train, epochs=100)
 
 model.evaluate(x_test, y_test)
