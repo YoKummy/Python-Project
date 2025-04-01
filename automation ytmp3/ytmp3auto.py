@@ -26,5 +26,6 @@ def download_playlist(playlist_url, download_folder):
             
 if __name__ == "__main__":
     playlist_url = input("Enter url:")
-    download_folder = r"C:\Users\User\Desktop\song"
+    #download_folder = r"C:\Users\User\Desktop\song" #windows
+    download_folder = "/Users/Ash/Desktop/songs" #mac
     download_playlist(playlist_url, download_folder)
